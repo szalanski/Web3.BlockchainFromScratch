@@ -1,4 +1,4 @@
-use blockchain_from_scratch::blockchain;
+use rust_chain::blockchain;
 
 fn main() {
     println!("Hello, blockchain world!");
