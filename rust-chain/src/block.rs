@@ -1,3 +1,0 @@
-struct Block {}
-
-impl Block {}
