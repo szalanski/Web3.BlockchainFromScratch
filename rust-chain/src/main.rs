@@ -1,24 +1,19 @@
 use chrono::Utc;
-use rust_chain::core::block::Block;
-use std::collections::hash_map::DefaultHasher;
-use std::hash::Hash;
-use std::hash::Hasher;
+use rust_chain::core::block::{Block, Sha256Hash, ShaHash};
+use sha2::{Digest, Sha256};
 
-#[derive(Debug, Hash, Default)]
+#[derive(Debug, Default)]
 struct Data;
+
+impl Sha256Hash for Data {
+    fn hash(&self) -> ShaHash {
+        Sha256::digest("dummy").into()
+    }
+}
 
 fn main() {
     let genesis: Block<Data> = Block::genesis();
     println!("Genesis block for rust-blockchain: {:#?}", genesis);
     let minedBlock = Block::mine_block(genesis, Data);
     println!("First mined block: {:#?}", minedBlock);
-}
-
-fn new_block_example() {
-    let mut value = 128;
-    let mut hasher = DefaultHasher::new();
-    value.hash(&mut hasher);
-
-    let firstBlock = Block::new(Utc::now().timestamp_millis(), 0, hasher.finish(), value);
-    println!("First block of rust-blockchain: {:#?}", firstBlock);
 }

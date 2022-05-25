@@ -1,21 +1,26 @@
 use chrono::Utc;
-use std::collections::hash_map::DefaultHasher;
-use std::hash::Hash;
-use std::hash::Hasher;
+use sha2::Digest;
+use sha2::Sha256;
+
+pub trait Sha256Hash {
+    fn hash(&self) -> [u8; 32];
+}
+
+pub type ShaHash = [u8; 32];
 
 #[derive(Debug)]
-pub struct Block<T: Default + Hash> {
+pub struct Block<T: Default + Sha256Hash> {
     timestamp: i64,
-    lastHash: u64,
-    hash: u64,
+    lastHash: ShaHash,
+    hash: ShaHash,
     data: T,
 }
 
 impl<T> Block<T>
 where
-    T: Default + Hash,
+    T: Default + Sha256Hash,
 {
-    pub fn new(timestamp: i64, lastHash: u64, hash: u64, data: T) -> Block<T> {
+    pub fn new(timestamp: i64, lastHash: ShaHash, hash: ShaHash, data: T) -> Block<T> {
         Block {
             timestamp,
             hash,
@@ -27,8 +32,8 @@ where
     pub fn genesis() -> Block<T> {
         Block {
             timestamp: 0,
-            lastHash: 0,
-            hash: 12076202582256590650,
+            lastHash: Sha256::digest("genesis").into(),
+            hash: Sha256::digest("genesis").into(),
             data: T::default(),
         }
     }
@@ -36,13 +41,7 @@ where
     pub fn mine_block(lastBlock: Block<T>, data: T) -> Block<T> {
         let timestamp = Utc::now().timestamp_millis();
         let lastHash = lastBlock.hash;
-        let hash = Block::generate_hash(&data);
+        let hash = data.hash();
         Block::new(timestamp, lastHash, hash, data)
-    }
-
-    fn generate_hash(data: &T) -> u64 {
-        let mut hasher = DefaultHasher::new();
-        data.hash(&mut hasher);
-        hasher.finish()
     }
 }
