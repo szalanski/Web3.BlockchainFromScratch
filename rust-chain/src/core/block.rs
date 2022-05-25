@@ -2,11 +2,11 @@ use chrono::Utc;
 use sha2::Digest;
 use sha2::Sha256;
 
-pub trait Hashable {
-    fn hash(&self) -> [u8; 32];
-}
-
 pub type Hash = [u8; 32];
+
+pub trait Hashable {
+    fn hash(&self) -> Hash;
+}
 
 #[derive(Debug)]
 pub struct Block<T: Default + Hashable> {

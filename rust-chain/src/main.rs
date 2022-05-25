@@ -1,4 +1,3 @@
-use chrono::Utc;
 use rust_chain::core::block::{Block, Hash, Hashable};
 use sha2::{Digest, Sha256};
 
