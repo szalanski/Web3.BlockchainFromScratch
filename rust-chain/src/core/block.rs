@@ -2,25 +2,25 @@ use chrono::Utc;
 use sha2::Digest;
 use sha2::Sha256;
 
-pub trait Sha256Hash {
+pub trait Hashable {
     fn hash(&self) -> [u8; 32];
 }
 
-pub type ShaHash = [u8; 32];
+pub type Hash = [u8; 32];
 
 #[derive(Debug)]
-pub struct Block<T: Default + Sha256Hash> {
+pub struct Block<T: Default + Hashable> {
     timestamp: i64,
-    lastHash: ShaHash,
-    hash: ShaHash,
+    lastHash: Hash,
+    hash: Hash,
     data: T,
 }
 
 impl<T> Block<T>
 where
-    T: Default + Sha256Hash,
+    T: Default + Hashable,
 {
-    pub fn new(timestamp: i64, lastHash: ShaHash, hash: ShaHash, data: T) -> Block<T> {
+    pub fn new(timestamp: i64, lastHash: Hash, hash: Hash, data: T) -> Block<T> {
         Block {
             timestamp,
             hash,

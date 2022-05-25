@@ -1,12 +1,12 @@
 use chrono::Utc;
-use rust_chain::core::block::{Block, Sha256Hash, ShaHash};
+use rust_chain::core::block::{Block, Hash, Hashable};
 use sha2::{Digest, Sha256};
 
 #[derive(Debug, Default)]
 struct Data;
 
-impl Sha256Hash for Data {
-    fn hash(&self) -> ShaHash {
+impl Hashable for Data {
+    fn hash(&self) -> Hash {
         Sha256::digest("dummy").into()
     }
 }
