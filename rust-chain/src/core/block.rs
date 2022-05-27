@@ -1,26 +1,22 @@
+use super::hash::Hash;
+use super::hash::HashValue;
 use chrono::Utc;
 use sha2::Digest;
 use sha2::Sha256;
 
-pub type Hash = [u8; 32];
-
-pub trait Hashable {
-    fn hash(&self) -> Hash;
-}
-
 #[derive(Debug)]
-pub struct Block<T: Default + Hashable> {
+pub struct Block<T: Default + Hash> {
     timestamp: i64,
-    lastHash: Hash,
-    hash: Hash,
+    lastHash: HashValue,
+    hash: HashValue,
     data: T,
 }
 
 impl<T> Block<T>
 where
-    T: Default + Hashable,
+    T: Default + Hash,
 {
-    pub fn new(timestamp: i64, lastHash: Hash, hash: Hash, data: T) -> Block<T> {
+    pub fn new(timestamp: i64, lastHash: HashValue, hash: HashValue, data: T) -> Block<T> {
         Block {
             timestamp,
             hash,

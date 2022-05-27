@@ -1,11 +1,12 @@
-use rust_chain::core::block::{Block, Hash, Hashable};
+use rust_chain::core::block::Block;
+use rust_chain::core::hash::{Hash, HashValue};
 use sha2::{Digest, Sha256};
 
 #[derive(Debug, Default)]
 struct Data;
 
-impl Hashable for Data {
-    fn hash(&self) -> Hash {
+impl Hash for Data {
+    fn hash(&self) -> HashValue {
         Sha256::digest("dummy").into()
     }
 }
