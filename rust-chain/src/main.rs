@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+#![allow(unused)]
 use chrono::{Date, DateTime, TimeZone, Utc};
 use rust_chain::core::block::Block;
 use rust_chain::core::hash::{Hash, HashValue};
@@ -15,8 +17,8 @@ impl Hash for Data {
 fn main() {
     let genesis: Block<Data> = Block::genesis();
     println!("Genesis block for rust-blockchain: {:#?}", genesis);
-    let minedBlock = Block::mine_block(genesis, Data);
-    println!("First mined block: {:#?}", minedBlock);
+    let mined_block = Block::mine_block(genesis, Data);
+    println!("First mined block: {:#?}", mined_block);
 }
 
 fn datetime_parse() {
