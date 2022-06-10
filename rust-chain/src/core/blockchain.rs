@@ -2,7 +2,7 @@ use super::block::Block;
 use super::hash::Hash;
 
 pub struct Blockchain<T: Default + Hash + Clone> {
-    chain: Vec<Block<T>>,
+    pub chain: Vec<Block<T>>,
 }
 
 impl<T> Blockchain<T>
