@@ -7,8 +7,50 @@ fn blockchain_starts_witch_genesis_block() {
     let genesis: Block<Data> = Block::genesis();
     let bc: Blockchain<Data> = Blockchain::new();
 
-    assert!(bc.chain[0].data == genesis.data);
-    assert!(bc.chain[0].hash == genesis.hash);
-    assert!(bc.chain[0].last_hash == genesis.last_hash);
-    assert!(bc.chain[0].timestamp == genesis.timestamp);
+    compare_blocks(&genesis, &bc.chain[0]);
+}
+
+#[test]
+fn blockchain_adds_new_block() {
+    let mut bc: Blockchain<Data> = Blockchain::new();
+    let test_data = Data { field: 10 };
+
+    bc.add(test_data.clone());
+
+    match bc.chain.last() {
+        Some(block) => assert!(
+            block.data == test_data,
+            "Data not match, expected: {:?}, actual {:?}",
+            block.data,
+            test_data
+        ),
+        None => assert!(false, "blockchain returned no block"),
+    }
+}
+
+fn compare_blocks(expected: &Block<Data>, actual: &Block<Data>) {
+    assert!(
+        expected.data == actual.data,
+        "Data not match, expected: {:?}, actual {:?}",
+        expected.data,
+        actual.data
+    );
+    assert!(
+        expected.hash == actual.hash,
+        "Hash not match, expected: {:?}, actual {:?}",
+        expected.hash,
+        actual.hash
+    );
+    assert!(
+        expected.last_hash == actual.last_hash,
+        "LastHash not match, expected: {:?}, actual {:?}",
+        expected.last_hash,
+        actual.last_hash
+    );
+    assert!(
+        expected.timestamp == actual.timestamp,
+        "timestamp not match, expected: {}, actual {}",
+        expected.timestamp,
+        actual.timestamp
+    );
 }
