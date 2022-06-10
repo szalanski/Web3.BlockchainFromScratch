@@ -4,8 +4,8 @@ use chrono::Utc;
 use sha2::Digest;
 use sha2::Sha256;
 
-#[derive(Debug)]
-pub struct Block<T: Default + Hash> {
+#[derive(Debug, Clone)]
+pub struct Block<T: Default + Hash + Clone> {
     pub timestamp: String,
     pub last_hash: HashValue,
     pub hash: HashValue,
@@ -14,7 +14,7 @@ pub struct Block<T: Default + Hash> {
 
 impl<T> Block<T>
 where
-    T: Default + Hash,
+    T: Default + Hash + Clone,
 {
     pub fn new(timestamp: String, last_hash: HashValue, hash: HashValue, data: T) -> Block<T> {
         Block {
