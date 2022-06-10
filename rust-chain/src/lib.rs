@@ -1,5 +1,1 @@
-pub mod blockchain {
-    pub fn run() {
-        println!("Runing...");
-    }
-}
+pub mod core;
