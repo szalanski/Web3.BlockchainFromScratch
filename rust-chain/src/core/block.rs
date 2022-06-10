@@ -6,10 +6,10 @@ use sha2::Sha256;
 
 #[derive(Debug)]
 pub struct Block<T: Default + Hash> {
-    timestamp: String,
-    last_hash: HashValue,
-    hash: HashValue,
-    data: T,
+    pub timestamp: String,
+    pub last_hash: HashValue,
+    pub hash: HashValue,
+    pub data: T,
 }
 
 impl<T> Block<T>
@@ -34,7 +34,7 @@ where
         }
     }
 
-    pub fn mine_block(last_block: Block<T>, data: T) -> Block<T> {
+    pub fn mine_block(last_block: &Block<T>, data: T) -> Block<T> {
         let timestamp = Utc::now().to_string();
         let last_hash = last_block.hash;
         let hash = Block::hash(&timestamp, &last_block.hash, &data);
