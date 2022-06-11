@@ -1,13 +1,13 @@
 use super::block::Block;
 use super::hash::Hash;
 
-pub struct Blockchain<T: Default + Hash> {
+pub struct Blockchain<T: Default + Hash + Eq> {
     pub chain: Vec<Block<T>>,
 }
 
 impl<T> Blockchain<T>
 where
-    T: Default + Hash,
+    T: Default + Hash + Eq,
 {
     pub fn new() -> Blockchain<T> {
         Blockchain {
@@ -17,7 +17,24 @@ where
 
     pub fn add(&mut self, data: T) {
         let last_block = self.chain.last().unwrap();
-        let mut block = Block::mine_block(last_block, data);
+        let block = Block::mine_block(last_block, data);
         self.chain.push(block);
+    }
+
+    pub fn is_valid_chain(&self, bc: &Blockchain<T>) -> bool {
+        if bc.chain[0] != Block::genesis() {
+            return false;
+        }
+
+        for i in 1..=bc.chain.len() {
+            let block = &bc.chain[i];
+            let last = &bc.chain[i - 1];
+
+            if block.last_hash != last.hash || block.hash != Block::block_hash(&block) {
+                return false;
+            }
+        }
+
+        true
     }
 }
