@@ -27,3 +27,29 @@ fn blockchain_adds_new_block() {
         None => assert!(false, "blockchain returned no block"),
     }
 }
+
+#[test]
+fn blockchain_chain_validation_is_valid() {
+    let mut other: Blockchain<Data> = Blockchain::new();
+    other.add(Data { field: 11 });
+
+    assert!(Blockchain::is_valid_chain(&other));
+}
+
+#[test]
+fn blockchain_chain_validation_genesis_block_is_not_valid() {
+    let mut other: Blockchain<Data> = Blockchain::new();
+    other.add(Data { field: 12 });
+    //corrupt genesis block
+    other.chain[0].data = Data { field: 12 };
+    assert!(Blockchain::is_valid_chain(&other) == false);
+}
+
+#[test]
+fn blockchain_chain_validation_block_is_not_valid() {
+    let mut other: Blockchain<Data> = Blockchain::new();
+    other.add(Data { field: 12 });
+    other.chain[1].data = Data { field: 10 };
+
+    assert!(Blockchain::is_valid_chain(&other) == false);
+}

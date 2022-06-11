@@ -21,12 +21,12 @@ where
         self.chain.push(block);
     }
 
-    pub fn is_valid_chain(&self, bc: &Blockchain<T>) -> bool {
+    pub fn is_valid_chain(bc: &Blockchain<T>) -> bool {
         if bc.chain[0] != Block::genesis() {
             return false;
         }
 
-        for i in 1..=bc.chain.len() {
+        for i in 1..bc.chain.len() {
             let block = &bc.chain[i];
             let last = &bc.chain[i - 1];
 
