@@ -1,4 +1,4 @@
-use rust_chain::core::hash::{Hash, HashValue};
+use rust_chain::hash::{Hash, HashValue};
 use sha2::{Digest, Sha256};
 
 #[derive(Debug, Default)]
