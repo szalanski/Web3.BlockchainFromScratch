@@ -1,6 +1,8 @@
 use super::block::Block;
 use super::hash::Hash;
+use log::{info, warn};
 
+#[derive(Debug, Clone)]
 pub struct Blockchain<T: Default + Hash + Eq> {
     pub chain: Vec<Block<T>>,
 }
@@ -36,5 +38,20 @@ where
         }
 
         true
+    }
+
+    pub fn replace_chain(&mut self, other: Blockchain<T>) {
+        if other.chain.len() <= self.chain.len() {
+            info!("Received chain is not longer than the current chain");
+            return;
+        }
+
+        if !Blockchain::is_valid_chain(&other) {
+            warn!("The received chain is not valid.");
+            return;
+        }
+
+        info!("Replacing current chain with the new chain.");
+        self.chain = other.chain;
     }
 }

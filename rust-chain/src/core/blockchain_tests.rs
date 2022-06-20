@@ -2,6 +2,12 @@ use super::block::Block;
 use super::blockchain::Blockchain;
 use super::test_data::Data;
 
+fn init_logger() {
+    env_logger::init_from_env(
+        env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "info"),
+    );
+}
+
 #[test]
 fn blockchain_starts_witch_genesis_block() {
     let genesis: Block<Data> = Block::genesis();
@@ -52,4 +58,34 @@ fn blockchain_chain_validation_block_is_not_valid() {
     other.chain[1].data = Data { field: 10 };
 
     assert!(Blockchain::is_valid_chain(&other) == false);
+}
+
+#[test]
+fn blockchain_replaces_chain_with_valid_longer_chain() {
+    init_logger();
+    //Create two blockchains with same data
+    let mut bc: Blockchain<Data> = Blockchain::new();
+    let mut other: Blockchain<Data> = Blockchain::new();
+    let test_data = Data { field: 10 };
+    bc.add(test_data.clone());
+    other.add(test_data);
+    //add more data to other to make it longer
+    other.add(Data { field: 11 });
+
+    bc.replace_chain(other.clone());
+
+    assert!(bc.chain == other.chain);
+}
+
+#[test]
+fn blockchain_does_not_replace_when_other_is_less_or_equal() {
+    init_logger();
+    //Create two blockchains with same data
+    let mut bc: Blockchain<Data> = Blockchain::new();
+    let other: Blockchain<Data> = Blockchain::new();
+    bc.add(Data { field: 10 });
+
+    bc.replace_chain(other.clone());
+
+    assert!(bc.chain != other.chain);
 }
