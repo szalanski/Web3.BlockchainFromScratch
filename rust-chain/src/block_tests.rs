@@ -1,5 +1,5 @@
 use super::test_data::Data;
-use crate::core::block::Block;
+use crate::block::Block;
 
 #[test]
 fn mine_block_generates_second_block_correctly() {

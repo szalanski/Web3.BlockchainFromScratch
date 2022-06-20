@@ -2,12 +2,6 @@ use super::block::Block;
 use super::blockchain::Blockchain;
 use super::test_data::Data;
 
-fn init_logger() {
-    env_logger::init_from_env(
-        env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "info"),
-    );
-}
-
 #[test]
 fn blockchain_starts_witch_genesis_block() {
     let genesis: Block<Data> = Block::genesis();
@@ -62,7 +56,6 @@ fn blockchain_chain_validation_block_is_not_valid() {
 
 #[test]
 fn blockchain_replaces_chain_with_valid_longer_chain() {
-    init_logger();
     //Create two blockchains with same data
     let mut bc: Blockchain<Data> = Blockchain::new();
     let mut other: Blockchain<Data> = Blockchain::new();
@@ -79,7 +72,6 @@ fn blockchain_replaces_chain_with_valid_longer_chain() {
 
 #[test]
 fn blockchain_does_not_replace_when_other_is_less_or_equal() {
-    init_logger();
     //Create two blockchains with same data
     let mut bc: Blockchain<Data> = Blockchain::new();
     let other: Blockchain<Data> = Blockchain::new();
