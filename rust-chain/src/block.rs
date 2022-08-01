@@ -1,10 +1,11 @@
 use super::hash::Hash;
 use super::hash::HashValue;
 use chrono::Utc;
+use serde::{Deserialize, Serialize};
 use sha2::Digest;
 use sha2::Sha256;
 
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub struct Block<T: Default + Hash + Eq> {
     pub timestamp: String,
     pub last_hash: HashValue,
